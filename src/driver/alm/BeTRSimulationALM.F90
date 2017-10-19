@@ -255,7 +255,7 @@ contains
   end subroutine ALMStepWithoutDrainage
 
   !---------------------------------------------------------------------------------
-  subroutine ALMset_active(this,bounds,col)
+  subroutine ALMset_active(this, begc, endc, active)
 
   !
   !DESCRIPTION
@@ -263,12 +263,12 @@ contains
   implicit none
   ! !ARGUMENTS:
   class(betr_simulation_alm_type) , intent(inout) :: this
-  type(bounds_type)               , intent(in)    :: bounds
-  type(column_type)               , intent(in)    :: col ! column type
+  integer                         , intent(in)    :: begc, endc
+  logical                , pointer, intent(in)    :: active(:)
 
   integer :: c
-  do c = bounds%begc, bounds%endc
-    this%active_col(c) = (this%active_col(c) .and. col%active(c))
+  do c = begc, endc
+    this%active_col(c) = (this%active_col(c) .and. active(c))
   enddo
   end subroutine ALMset_active
 

@@ -93,49 +93,67 @@ module BeTRSimulation
      ! NOTE(bja, 201603) BeTR types only, no LSM specific types here!
 
    contains
-     procedure, public :: BeTRInit
-     procedure, public :: BeTRSetFilter
-     procedure, public :: SetClock
-     procedure, public :: InitOnline              => BeTRSimulationInit
-     procedure, public :: Init                    => BeTRSimulationInitOffline
-     procedure, public :: ConsistencyCheck        => BeTRSimulationConsistencyCheck
-     procedure, public :: PreDiagSoilColWaterFlux => BeTRSimulationPreDiagSoilColWaterFlux
-     procedure, public :: DiagnoseDtracerFreezeThaw=> BeTRSimulationDiagnoseDtracerFreezeThaw
-     procedure, public :: DiagAdvWaterFlux        => BeTRSimulationDiagAdvWaterFlux
-     procedure, public :: DiagDrainWaterFlux      => BeTRSimulationDiagDrainWaterFlux
-     procedure, public :: BeginSnowLayerAdjst     => BeTRSimulationBeginTracerSnowLayerAdjst
-     procedure, public :: EndSnowLayerAdjst       => BeTRSimulationEndTracerSnowLayerAdjst
-     procedure, public :: CombineSnowLayers       => BeTRSimulationCombineSnowLayers
-     procedure, public :: DvideSnowLayers         => BeTRSimulationDvideSnowLayers
-     procedure, public :: StepWithoutDrainage     => BeTRSimulationStepWithoutDrainage
-     procedure, public :: StepWithDrainage        => BeTRSimulationStepWithDrainage
-     procedure, public :: BeginMassBalanceCheck   => BeTRSimulationBeginMassBalanceCheck
-     procedure, public :: MassBalanceCheck        => BeTRSimulationMassBalanceCheck
-     procedure, public :: BeTRSetBiophysForcing   => BeTRSimulationSetBiophysForcing
-     procedure, public :: RetrieveBiogeoFlux      => BeTRSimulationRetrieveBiogeoFlux
-     procedure, public :: DiagnoseLnd2atm         => BeTRSimulationDiagnoseLnd2atm
-     procedure, public :: CreateOfflineHistory    => hist_htapes_create
-     procedure, public :: WriteOfflineHistory     => hist_write
+     procedure, public  :: BeTRInit
+     procedure, public  :: BeTRInitAllocateMemory
+     procedure, public  :: BeTRInitializeBiophysForc
+     procedure, public  :: BeTRInitializeCols
+     procedure, public  :: BeTRInitializePFT
+     procedure, public  :: BeTRInitializeActiveCols
+     procedure, public  :: BeTRInitialize_1
+     procedure, public  :: BeTRSetFilter
+     procedure, public  :: SetClock
+     procedure, public  :: InitOnline                             => BeTRSimulationInit
+     procedure, public  :: Init                                   => BeTRSimulationInitOffline
+     procedure, public  :: ConsistencyCheck                       => BeTRSimulationConsistencyCheck
+     procedure, public  :: PreDiagSoilColWaterFlux                => BeTRSimulationPreDiagSoilColWaterFlux
+     procedure, public  :: DiagnoseDtracerFreezeThaw              => BeTRSimulationDiagnoseDtracerFreezeThaw
+     procedure, public  :: DiagAdvWaterFlux                       => BeTRSimulationDiagAdvWaterFlux
+     procedure, public  :: DiagDrainWaterFlux                     => BeTRSimulationDiagDrainWaterFlux
+     procedure, public  :: BeginSnowLayerAdjst                    => BeTRSimulationBeginTracerSnowLayerAdjst
+     procedure, public  :: EndSnowLayerAdjst                      => BeTRSimulationEndTracerSnowLayerAdjst
+     procedure, public  :: CombineSnowLayers                      => BeTRSimulationCombineSnowLayers
+     procedure, public  :: DvideSnowLayers                        => BeTRSimulationDvideSnowLayers
+     procedure, public  :: StepWithoutDrainage                    => BeTRSimulationStepWithoutDrainage
+     procedure, public  :: StepWithDrainage                       => BeTRSimulationStepWithDrainage
+     procedure, public  :: BeginMassBalanceCheck                  => BeTRSimulationBeginMassBalanceCheck
+     procedure, public  :: MassBalanceCheck                       => BeTRSimulationMassBalanceCheck
+     procedure, public  :: BeTRSetBiophysForcing                  => BeTRSimulationSetBiophysForcing
+     procedure, public  :: BeTRSetBiophysForcingWaterstateVars    => BeTRSimulationSetBiophysForcingWaterstateVars
+     procedure, public  :: BeTRSetBiophysForcingCarbonFluxVars    => BeTRSimulationSetBiophysForcingCarbonFluxVars
+     procedure, public  :: BeTRSetBiophysForcingWaterFluxVars     => BeTRSimulationSetBiophysForcingWaterFluxVars
+     procedure, public  :: BeTRSetBiophysForcingTemperatureVars   => BeTRSimulationSetBiophysForcingTemperatureVars
+     procedure, public  :: BeTRSetBiophysForcingSoilHydrologyVars => BeTRSimulationSetBiophysForcingSoilHydrologyVars
+     procedure, public  :: BeTRSetBiophysForcingAtm2LndVars       => BeTRSimulationSetBiophysForcingAtm2LndVars
+     procedure, public  :: BeTRSetBiophysForcingCanopyStateVars   => BeTRSimulationSetBiophysForcingCanopyStateVars
+     procedure, public  :: BeTRSetBiophysForcingChemStateVars     => BeTRSimulationSetBiophysForcingChemStateVars
+     procedure, public  :: BeTRSetBiophysForcingSoilStateVars     => BeTRSimulationSetBiophysForcingSoilStateVars
+     procedure, public  :: RetrieveBiogeoFlux                     => BeTRSimulationRetrieveBiogeoFlux
+     procedure, public  :: DiagnoseLnd2atm                        => BeTRSimulationDiagnoseLnd2atm
+     procedure, public  :: CreateOfflineHistory                   => hist_htapes_create
+     procedure, public  :: WriteOfflineHistory                    => hist_write
+     procedure, public  :: SetBaseFilename                        => BeTRSimulationSetBaseFilename
 
-     procedure, public :: WriteRegressionOutput
+     procedure, public  :: WriteRegressionOutput
      !the following are used to interact with lsm
-     procedure, public :: do_soibgc
-     procedure, public :: BeTRRestart             => BeTRSimulationRestart
-     procedure, public :: BeTRRestartOffline      => BeTRSimulationRestartOffline
-     procedure, public :: BeTRRestartOpen         => BeTRSimulationRestartOpen
-     procedure, public :: BeTRRestartClose        => BeTRSimulationRestartClose
-     procedure, private :: BeTRCreateHistory      => BeTRSimulationCreateHistory
-     procedure, public  :: HistRetrieval           => BeTRSimulationHistRetrieval
-     procedure, private :: BeTRRetrieveHistoryState    => BeTRSimulationRetrieveHistoryState
-     procedure, private :: BeTRRetrieveHistoryFlux    => BeTRSimulationRetrieveHistoryFlux
-     procedure, public :: BeTRSetcps              => BeTRSimulationSetcps
-     procedure, public :: BeTRSetBounds           => BeTRSimulationSetBounds
-     procedure, private:: hist_create_states
-     procedure, private:: hist_create_fluxes
-     procedure, private:: hist_output_states
-     procedure, private:: hist_output_fluxes
-     procedure, private:: RestAlloc               => BeTRSimulationRestartAlloc
-     procedure, private:: HistAlloc               => BeTRSimulationHistoryAlloc
+     procedure, public  :: do_soibgc
+     procedure, public  :: BeTRRestart                            => BeTRSimulationRestart
+     procedure, public  :: BeTRRestartOffline                     => BeTRSimulationRestartOffline
+     procedure, public  :: BeTRRestartOpen                        => BeTRSimulationRestartOpen
+     procedure, public  :: BeTRRestartClose                       => BeTRSimulationRestartClose
+     procedure, public  :: BeTRCreateHistory                      => BeTRSimulationCreateHistory
+     procedure, public  :: HistRetrieval                          => BeTRSimulationHistRetrieval
+     procedure, private :: BeTRRetrieveHistoryState               => BeTRSimulationRetrieveHistoryState
+     procedure, private :: BeTRRetrieveHistoryFlux                => BeTRSimulationRetrieveHistoryFlux
+     procedure, public  :: BeTRSetcps                             => BeTRSimulationSetcps
+     procedure, public  :: BeTRSetcpsCol                          => BeTRSimulationSetcpsCol
+     procedure, public  :: BeTRSetcpsPFT                          => BeTRSimulationSetcpsPFT
+     procedure, public  :: BeTRSetBounds                          => BeTRSimulationSetBounds
+     procedure, private :: hist_create_states
+     procedure, private :: hist_create_fluxes
+     procedure, private :: hist_output_states
+     procedure, private :: hist_output_fluxes
+     procedure, public  :: RestAlloc                              => BeTRSimulationRestartAlloc
+     procedure, private :: HistAlloc                              => BeTRSimulationHistoryAlloc
 
   end type betr_simulation_type
 
@@ -273,120 +291,105 @@ contains
     type(betr_bounds_type) :: betr_bounds
     integer :: c, l
     logical :: asoibgc
-    !print*,'base_filename',trim(base_filename)
 
     biulog = iulog
-    if(present(base_filename))then
-      this%base_filename = base_filename
+
+    if (present(base_filename)) then
+      call this%SetBaseFilename(base_filename)
     else
-      this%base_filename = ''
+      call this%SetBaseFilename()
     endif
+
     if(present(masterproc))then
       call this%betr_time%Init(namelist_buffer, masterproc)
     else
       call this%betr_time%Init(namelist_buffer)
     endif
-    !allocate memory
-    allocate(this%betr(bounds%begc:bounds%endc))
-    allocate(this%biophys_forc(bounds%begc:bounds%endc))
-    allocate(this%biogeo_flux(bounds%begc:bounds%endc))
-    allocate(this%biogeo_state(bounds%begc:bounds%endc))
-    allocate(this%bstatus(bounds%begc:bounds%endc))
-    allocate(this%betr_col(bounds%begc:bounds%endc))
-    allocate(this%betr_pft(bounds%begc:bounds%endc))
-    allocate(this%active_col(bounds%begc:bounds%endc))
-    allocate(this%bsimstatus)
 
-    call this%bsimstatus%reset()
+    !allocate memory
+    call this%BeTRInitAllocateMemory(bounds%begc, bounds%endc)
 
     !grid horizontal bounds
     call this%BeTRSetBounds(betr_bounds)
 
-    do c = bounds%begc, bounds%endc
-      l = col%landunit(c)
-      call this%biophys_forc(c)%Init(betr_bounds)
+    call this%BeTRInitializeBiophysForc(betr_bounds, bounds%begc, bounds%endc)
+    call this%BeTRInitializeCols(       betr_bounds, bounds%begc, bounds%endc)
+    call this%BeTRInitializePFT(        betr_bounds, bounds%begc, bounds%endc)
+    call this%BeTRInitializeActiveCols( betr_bounds, bounds%begc, bounds%endc, &
+         col%landunit, lun%itype)
 
-      call this%betr_col(c)%Init(betr_bounds)
 
-      call this%betr_pft(c)%Init(betr_bounds)
-
-      if (lun%itype(l) == istsoil .or. lun%itype(l) == istcrop) then
-        this%active_col(c) = .true.
-      else
-        this%active_col(c) = .false.
-      endif
-    enddo
     call this%BeTRSetcps(bounds, col, pft)
-    call this%BeTRSetBiophysForcing(bounds, col, pft, betr_bounds%lbj, betr_bounds%ubj, &
-        waterstate_vars = waterstate)
 
-    do c = bounds%begc, bounds%endc
-      call this%betr(c)%Init(namelist_buffer, betr_bounds, this%betr_col(c), &
-          this%biophys_forc(c), asoibgc, this%bstatus(c))
-      if(c==bounds%begc)this%active_soibgc=asoibgc
-      if(this%bstatus(c)%check_status())then
-        call this%bsimstatus%setcol(c)
-        call this%bsimstatus%set_msg(this%bstatus(c)%print_msg(),this%bstatus(c)%print_err())
-        exit
-      endif
-    enddo
+    call this%BeTRSetBiophysForcingWaterstateVars(&
+         bounds%begc, bounds%endc,                   &
+         betr_bounds%lbj, betr_bounds%ubj,           &
+         waterstate%finundated_col,                  &
+         waterstate%frac_h2osfc_col,                 &
+         waterstate%h2osoi_liq_col,                  &
+         waterstate%h2osoi_ice_col,                  &
+         waterstate%h2osoi_liqvol_col,               &
+         waterstate%h2osoi_icevol_col,               &
+         waterstate%h2osoi_vol_col,                  &
+         waterstate%air_vol_col,                     &
+         waterstate%rho_vap_col,                               &
+         waterstate%rhvap_soi_col,                             &
+         waterstate%smp_l_col)
 
-    if(this%bsimstatus%check_status())call endrun(msg=this%bsimstatus%print_msg())
-
-    do c = bounds%begc, bounds%endc
-
-      call this%biogeo_state(c)%Init(betr_bounds, this%active_soibgc)
-
-      call this%biogeo_flux(c)%Init(betr_bounds, this%active_soibgc)
-    enddo
-    !identify variables that are used for history output
-    c = bounds%begc
-    call this%betr(c)%get_hist_size(this%num_hist_state1d, this%num_hist_state2d, &
-      this%num_hist_flux1d, this%num_hist_flux2d)
-
-    call this%HistAlloc(bounds)
-
-    call this%betr(c)%get_hist_info(this%num_hist_state1d, this%num_hist_state2d, &
-      this%num_hist_flux1d, this%num_hist_flux2d, &
-      this%state_hist1d_var(1:this%num_hist_state1d), this%state_hist2d_var(1:this%num_hist_state2d), &
-      this%flux_hist1d_var(1:this%num_hist_flux1d), this%flux_hist2d_var(1:this%num_hist_flux2d))
-
-    if(this%bstatus(c)%check_status())then
-      call this%bsimstatus%setcol(c)
-      call this%bsimstatus%set_msg(this%bstatus(c)%print_msg(),this%bstatus(c)%print_err())
-      if(this%bsimstatus%check_status())call endrun(msg=this%bsimstatus%print_msg())
-    endif
-
-    if(betr_offline)then
-      call this%CreateOfflineHistory(bounds, betr_nlevtrc_soil, &
-         this%num_hist_state1d, this%num_hist_state2d, &
+    call this%BeTRInitialize_1(betr_bounds, bounds%begc, bounds%endc, namelist_buffer)
+    
+    if (betr_offline) then
+       call this%CreateOfflineHistory(bounds, &
+            this%num_hist_state1d, this%num_hist_state2d,        &
             this%num_hist_flux1d, this%num_hist_flux2d)
     else
-      call this%BeTRCreateHistory(bounds, betr_nlevtrc_soil, &
-         this%num_hist_state1d, this%num_hist_state2d, &
-            this%num_hist_flux1d, this%num_hist_flux2d)
+       call this%BeTRCreateHistory(bounds)
     endif
-    !identify restart variables
-    call this%betr(c)%get_restartvar_size(this%num_rest_state1d, this%num_rest_state2d)
 
-    call this%RestAlloc(bounds)
+    call this%RestAlloc(bounds%begc, bounds%endc)
 
-    if(present(base_filename)) then
-      call this%regression%Init(base_filename, namelist_buffer, this%bsimstatus)
-      if(this%bsimstatus%check_status())call endrun(msg=this%bsimstatus%print_msg())
+    if (len(trim(this%base_filename)) > 0 ) then
+       call this%regression%Init(trim(this%base_filename), namelist_buffer, this%bsimstatus)
+       if (this%bsimstatus%check_status()) call endrun(msg=this%bsimstatus%print_msg())
     endif
+
   end subroutine BeTRInit
+
   !---------------------------------------------------------------------------------
-  subroutine BeTRSimulationRestartAlloc(this, bounds)
+  subroutine BeTRInitAllocateMemory(this, begc, endc)
+    !
+    ! DESCRIPTION
+    ! Allocates memory
+    !
+    class(betr_simulation_type) , intent(inout) :: this
+    integer                     , intent(in)    :: begc, endc
+
+    allocate(this%betr(        begc:endc))
+    allocate(this%biophys_forc(begc:endc))
+    allocate(this%biogeo_flux( begc:endc))
+    allocate(this%biogeo_state(begc:endc))
+    allocate(this%bstatus(     begc:endc))
+    allocate(this%betr_col(    begc:endc))
+    allocate(this%betr_pft(    begc:endc))
+    allocate(this%active_col(  begc:endc))
+
+    allocate(this%bsimstatus)
+
+    call this%bsimstatus%reset()
+
+  end subroutine BeTRInitAllocateMemory
+
+  !---------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------
+  subroutine BeTRSimulationRestartAlloc(this, begc, endc)
   implicit none
   !ARGUMENTS
-  class(betr_simulation_type)              , intent(inout) :: this
-  type(bounds_type)                        , intent(in)    :: bounds
+  class(betr_simulation_type) , intent(inout) :: this
+  integer                     , intent (in)   :: begc, endc
 
-  integer :: begc, endc
-
-  begc = bounds%begc; endc=bounds%endc
-
+  !identify restart variables
+  call this%betr(begc)%get_restartvar_size(this%num_rest_state1d, this%num_rest_state2d)
 
   allocate(this%rest_states_1d(begc:endc, 1:this%num_rest_state1d))
   this%rest_states_1d(:,:)=spval
@@ -396,15 +399,12 @@ contains
   end subroutine BeTRSimulationRestartAlloc
   !---------------------------------------------------------------------------------
 
-  subroutine BeTRSimulationHistoryAlloc(this, bounds)
+  subroutine BeTRSimulationHistoryAlloc(this, begc, endc)
   implicit none
   !ARGUMENTS
-  class(betr_simulation_type)              , intent(inout) :: this
-  type(bounds_type)                        , intent(in)    :: bounds
+  class(betr_simulation_type) , intent(inout) :: this
+  integer                     , intent(in)    :: begc, endc
 
-  integer :: begc, endc
-
-  begc = bounds%begc; endc=bounds%endc
   !state variables
   allocate(this%state_hist1d_var(this%num_hist_state1d))
   allocate(this%state_hist2d_var(this%num_hist_state2d))
@@ -613,7 +613,7 @@ contains
 
 !-------------------------------------------------------------------------------
 
-  subroutine hist_htapes_create(this, bounds, betr_nlevtrc_soil, &
+  subroutine hist_htapes_create(this, bounds, &
      num_hist_state1d, num_hist_state2d, num_hist_flux1d, num_hist_flux2d)
   !
   ! DESCRIPTIONS
@@ -635,7 +635,6 @@ contains
     implicit none
     class(betr_simulation_type) , intent(inout) :: this
     type(bounds_type)           , intent(in)    :: bounds               ! bounds
-    integer           , intent(in) :: betr_nlevtrc_soil
     integer           ,     intent(in)   :: num_hist_state1d
     integer           ,     intent(in)   :: num_hist_state2d
     integer           ,     intent(in)   :: num_hist_flux1d
@@ -849,185 +848,609 @@ contains
 
   !------------------------------------------------------------------------
   subroutine BeTRSimulationSetBiophysForcing(this, bounds,  col, pft, lbj, ubj, carbonflux_vars, waterstate_vars, &
-    waterflux_vars, temperature_vars, soilhydrology_vars, atm2lnd_vars, canopystate_vars, &
-    chemstate_vars, soilstate_vars)
-  !DESCRIPTION
-  !pass in biogeophysical variables for running betr
-  !USES
-  use SoilStateType     , only : soilstate_type
-  use WaterStateType    , only : Waterstate_Type
-  use TemperatureType   , only : temperature_type
-  use ChemStateType     , only : chemstate_type
-  use WaterfluxType     , only : waterflux_type
-  use atm2lndType       , only : atm2lnd_type
-  use SoilHydrologyType , only : soilhydrology_type
-  use CNCarbonFluxType  , only : carbonflux_type
-  use CanopyStateType   , only : canopystate_type
-  use MathfuncMod       , only : isnan => bisnan
-  implicit none
-  !ARGUMENTS
-  class(betr_simulation_type) , intent(inout)        :: this
-  type(bounds_type)           , intent(in)           :: bounds
-  type(patch_type)            , intent(in)           :: pft
-  type(column_type)           , intent(in)           :: col ! column type
-  integer                     , intent(in)           :: lbj, ubj
-  type(carbonflux_type)       , optional, intent(in) :: carbonflux_vars
-  type(Waterstate_Type)       , optional, intent(in) :: Waterstate_vars
-  type(waterflux_type)        , optional, intent(in) :: waterflux_vars
-  type(temperature_type)      , optional, intent(in) :: temperature_vars
-  type(soilhydrology_type)    , optional, intent(in) :: soilhydrology_vars
-  type(atm2lnd_type)          , optional, intent(in) :: atm2lnd_vars
-  type(canopystate_type)      , optional, intent(in) :: canopystate_vars
-  type(chemstate_type)        , optional, intent(in) :: chemstate_vars
-  type(soilstate_type)        , optional, intent(in) :: soilstate_vars
+       waterflux_vars, temperature_vars, soilhydrology_vars, atm2lnd_vars, canopystate_vars, &
+       chemstate_vars, soilstate_vars)
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !USES
+    use SoilStateType     , only : soilstate_type
+    use WaterStateType    , only : Waterstate_Type
+    use TemperatureType   , only : temperature_type
+    use ChemStateType     , only : chemstate_type
+    use WaterfluxType     , only : waterflux_type
+    use atm2lndType       , only : atm2lnd_type
+    use SoilHydrologyType , only : soilhydrology_type
+    use CNCarbonFluxType  , only : carbonflux_type
+    use CanopyStateType   , only : canopystate_type
+    use MathfuncMod       , only : isnan => bisnan
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout)        :: this
+    type(bounds_type)           , intent(in)           :: bounds
+    type(patch_type)            , intent(in)           :: pft
+    type(column_type)           , intent(in)           :: col ! column type
+    integer                     , intent(in)           :: lbj, ubj
+    type(carbonflux_type)       , optional, intent(in) :: carbonflux_vars
+    type(Waterstate_Type)       , optional, intent(in) :: Waterstate_vars
+    type(waterflux_type)        , optional, intent(in) :: waterflux_vars
+    type(temperature_type)      , optional, intent(in) :: temperature_vars
+    type(soilhydrology_type)    , optional, intent(in) :: soilhydrology_vars
+    type(atm2lnd_type)          , optional, intent(in) :: atm2lnd_vars
+    type(canopystate_type)      , optional, intent(in) :: canopystate_vars
+    type(chemstate_type)        , optional, intent(in) :: chemstate_vars
+    type(soilstate_type)        , optional, intent(in) :: soilstate_vars
 
-  !TEMPORARY VARIABLES
-  integer :: p, pi, cc, c, l, pp
-  integer :: npft_loc
-  cc = 1
-  do c = bounds%begc, bounds%endc
-    if(.not. this%active_col(c))cycle
-    if(present(carbonflux_vars))then
-      npft_loc = ubound(carbonflux_vars%annsum_npp_patch,1)-lbound(carbonflux_vars%annsum_npp_patch,1)+1
-      if(col%pfti(c) /= lbound(carbonflux_vars%annsum_npp_patch,1) .and. npft_loc/=col%npfts(c))then
-        do pi = 1, betr_maxpatch_pft
-          this%biophys_forc(c)%annsum_npp_patch(pi) = 0._r8
-          this%biophys_forc(c)%agnpp_patch(pi) = 0._r8
-          this%biophys_forc(c)%bgnpp_patch(pi)  = 0._r8
-        enddo
-      else
-        if(use_cn)then
-          pp = 0
-          do pi = 1, betr_maxpatch_pft
-            if (pi <= col%npfts(c)) then
-              p = col%pfti(c) + pi - 1
-              if (pft%active(p)) then
-                pp = pp + 1
-                this%biophys_forc(c)%annsum_npp_patch(pp) = carbonflux_vars%annsum_npp_patch(p)
-                this%biophys_forc(c)%agnpp_patch(pp)      = carbonflux_vars%agnpp_patch(p)
-                this%biophys_forc(c)%bgnpp_patch(pp)      = carbonflux_vars%bgnpp_patch(p)
-              endif
-            endif
-          enddo
-        else
-          npft_loc = ubound(carbonflux_vars%annsum_npp_patch,1)-lbound(carbonflux_vars%annsum_npp_patch,1)+1
-          if(col%pfti(c) /= lbound(carbonflux_vars%annsum_npp_patch,1) .and. npft_loc/=col%npfts(c))then
-            do pi = 1, betr_maxpatch_pft
-              this%biophys_forc(c)%annsum_npp_patch(pi) = 0._r8
-              this%biophys_forc(c)%agnpp_patch(pi) = 0._r8
-              this%biophys_forc(c)%bgnpp_patch(pi)  = 0._r8
-            enddo
-          endif
-        endif
-      endif
-    endif
-    !assign waterstate
-    if(present(waterstate_vars))then
-      this%biophys_forc(c)%finundated_col(cc)            = waterstate_vars%finundated_col(c)
-      this%biophys_forc(c)%frac_h2osfc_col(cc)           = waterstate_vars%frac_h2osfc_col(c)
-      this%biophys_forc(c)%h2osoi_liq_col(cc,lbj:ubj)    = waterstate_vars%h2osoi_liq_col(c,lbj:ubj)
-      this%biophys_forc(c)%h2osoi_ice_col(cc,lbj:ubj)    = waterstate_vars%h2osoi_ice_col(c,lbj:ubj)
-      this%biophys_forc(c)%h2osoi_liqvol_col(cc,lbj:ubj) = waterstate_vars%h2osoi_liqvol_col(c,lbj:ubj)
-      this%biophys_forc(c)%h2osoi_icevol_col(cc,lbj:ubj) = waterstate_vars%h2osoi_icevol_col(c,lbj:ubj)
-      this%biophys_forc(c)%h2osoi_vol_col(cc,lbj:ubj)    = waterstate_vars%h2osoi_vol_col(c,lbj:ubj)
-      this%biophys_forc(c)%air_vol_col(cc,lbj:ubj)       = waterstate_vars%air_vol_col(c,lbj:ubj)
-      this%biophys_forc(c)%rho_vap(cc,lbj:ubj)           = waterstate_vars%rho_vap_col(c,lbj:ubj)
-      this%biophys_forc(c)%rhvap_soi(cc,lbj:ubj)         = waterstate_vars%rhvap_soi_col(c,lbj:ubj)
-      this%biophys_forc(c)%smp_l_col(cc,lbj:ubj)         = waterstate_vars%smp_l_col(c,lbj:ubj)
-    endif
-    if(present(waterflux_vars))then
-      this%biogeo_flux(c)%qflx_infl_col(cc)             = waterflux_vars%qflx_infl_col(c)
-      this%biogeo_flux(c)%qflx_totdrain_col(cc)         = waterflux_vars%qflx_totdrain_col(c)
-      this%biogeo_flux(c)%qflx_gross_evap_soil_col(cc)  = waterflux_vars%qflx_gross_evap_soil_col(c)
-      this%biogeo_flux(c)%qflx_gross_infl_soil_col(cc)  = waterflux_vars%qflx_gross_infl_soil_col(c)
-      this%biophys_forc(c)%qflx_surf_col(cc)            = waterflux_vars%qflx_surf_col(c)
-      this%biophys_forc(c)%qflx_dew_grnd_col(cc)        = waterflux_vars%qflx_dew_grnd_col(c)
-      this%biophys_forc(c)%qflx_dew_snow_col(cc)        = waterflux_vars%qflx_dew_snow_col(c)
-      this%biophys_forc(c)%qflx_sub_snow_vol_col(cc)    = waterflux_vars%qflx_sub_snow_vol_col(c)
-      this%biophys_forc(c)%qflx_sub_snow_col(cc)        = waterflux_vars%qflx_sub_snow_col(c)
-      this%biophys_forc(c)%qflx_h2osfc2topsoi_col(cc)   = waterflux_vars%qflx_h2osfc2topsoi_col(c)
-      this%biophys_forc(c)%qflx_snow2topsoi_col(cc)     = waterflux_vars%qflx_snow2topsoi_col(c)
-      this%biophys_forc(c)%qflx_rootsoi_col(cc,lbj:ubj) = waterflux_vars%qflx_rootsoi_col(c,lbj:ubj)*1.e-3_r8
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
 
-      this%biogeo_flux(c)%qflx_adv_col(cc,lbj-1:ubj)    = waterflux_vars%qflx_adv_col(c,lbj-1:ubj)
-      this%biogeo_flux(c)%qflx_drain_vr_col(cc,lbj:ubj) = waterflux_vars%qflx_drain_vr_col(c,lbj:ubj)
-      pp = 0
-      do pi = 1, betr_maxpatch_pft
-       if (pi <= col%npfts(c)) then
-         p = col%pfti(c) + pi - 1
-         if (pft%active(p)) then
-           pp = pp + 1
-           this%biophys_forc(c)%qflx_tran_veg_patch(pp)     = waterflux_vars%qflx_tran_veg_patch(p)
-           this%biophys_forc(c)%qflx_rootsoi_frac_patch(pp,lbj:ubj) = waterflux_vars%qflx_rootsoi_frac_patch(p,lbj:ubj)
-         endif
-       endif
-      enddo
-    endif
-    if(present(temperature_vars))then
-      this%biophys_forc(c)%t_soi_10cm(cc)           = temperature_vars%t_soi10cm_col(c)
-      this%biophys_forc(c)%t_soisno_col(cc,lbj:ubj) = temperature_vars%t_soisno_col(c,lbj:ubj)
-      pp = 0
-      do pi = 1, betr_maxpatch_pft
-        if (pi <= col%npfts(c)) then
-          p = col%pfti(c) + pi - 1
-          if (pft%active(p)) then
-            pp = pp + 1
-            this%biophys_forc(c)%t_veg_patch(pp)         = temperature_vars%t_veg_patch(p)
-          endif
-        endif
-      enddo
-    endif
-    if(present(soilhydrology_vars))then
-      this%biophys_forc(c)%qflx_bot_col(cc)        = soilhydrology_vars%qcharge_col(c)
-      this%biophys_forc(c)%fracice_col(cc,lbj:ubj) = soilhydrology_vars%fracice_col(c,lbj:ubj)
-    endif
+    if (present(waterstate_vars)) then
+       call this%BeTRSetBiophysForcingWaterStateVars( &
+            bounds%begc, bounds%endc,                 &
+            lbj, ubj,                                 &
+            waterstate_vars%finundated_col,           &
+            waterstate_vars%frac_h2osfc_col,          &
+            waterstate_vars%h2osoi_liq_col,           &
+            waterstate_vars%h2osoi_ice_col,           &
+            waterstate_vars%h2osoi_liqvol_col,        &
+            waterstate_vars%h2osoi_icevol_col,        &
+            waterstate_vars%h2osoi_vol_col,           &
+            waterstate_vars%air_vol_col,              &
+            waterstate_vars%rho_vap_col,              &
+            waterstate_vars%rhvap_soi_col,            &
+            waterstate_vars%smp_l_col)
+    end if
 
-    if(present(atm2lnd_vars))then
-      this%biophys_forc(c)%forc_pbot_downscaled_col(cc) = atm2lnd_vars%forc_pbot_downscaled_col(c)
-      this%biophys_forc(c)%forc_t_downscaled_col(cc)    = atm2lnd_vars%forc_t_downscaled_col(c)
-    endif
+    if (present(carbonflux_vars)) then
+       call this%BeTRSetBiophysForcingCarbonFluxVars(  &
+            bounds,                                    &
+            lbj, ubj, col%pfti, col%npfts, pft%active, &
+            carbonflux_vars%annsum_npp_patch,          &
+            carbonflux_vars%agnpp_patch,               &
+            carbonflux_vars%bgnpp_patch)
+    end if
 
-    if(present(canopystate_vars))then
-      this%biophys_forc(c)%altmax_col(cc)          = canopystate_vars%altmax_col(c)
-      this%biophys_forc(c)%altmax_lastyear_col(cc) = canopystate_vars%altmax_lastyear_col(c)
-      pp = 0
-      do pi = 1, betr_maxpatch_pft
-        if (pi <= col%npfts(c)) then
-          p = col%pfti(c) + pi - 1
-          if (pft%active(p)) then
-            pp = pp + 1
-            this%biophys_forc(c)%lbl_rsc_h2o_patch(pp) = canopystate_vars%lbl_rsc_h2o_patch(p)
-            this%biophys_forc(c)%elai_patch(pp)        = canopystate_vars%elai_patch(p)
-          endif
-        endif
-      enddo
-    endif
-    if(present(chemstate_vars))then
-      this%biophys_forc(c)%soil_pH(cc,lbj:ubj) = chemstate_vars%soil_pH(c,lbj:ubj)
-    endif
-    if(present(soilstate_vars))then
-      this%biophys_forc(c)%bsw_col(cc,lbj:ubj)          = soilstate_vars%bsw_col(c,lbj:ubj)
-      this%biophys_forc(c)%watsat_col(cc,lbj:ubj)       = soilstate_vars%watsat_col(c,lbj:ubj)
-      this%biophys_forc(c)%eff_porosity_col(cc,lbj:ubj) = soilstate_vars%eff_porosity_col(c,lbj:ubj)
-      this%biophys_forc(c)%cellorg_col(cc,lbj:ubj)      = soilstate_vars%cellorg_col(c,lbj:ubj)
-      this%biophys_forc(c)%cellclay_col(cc,lbj:ubj)     = soilstate_vars%cellclay_col(c,lbj:ubj)
-      this%biophys_forc(c)%cellsand_col(cc,lbj:ubj)     = soilstate_vars%cellsand_col(c,lbj:ubj)
-      this%biophys_forc(c)%bd_col(cc,lbj:ubj)           = soilstate_vars%bd_col(c,lbj:ubj)
-      this%biophys_forc(c)%watfc_col(cc,lbj:ubj)        = soilstate_vars%watfc_col(c,lbj:ubj)
-      this%biophys_forc(c)%sucsat_col(cc,lbj:ubj)       = soilstate_vars%sucsat_col(c,lbj:ubj)
-      pp = 0
-      do pi = 1, betr_maxpatch_pft
-        if (pi <= col%npfts(c)) then
-          p = col%pfti(c) + pi - 1
-          if (pft%active(p)) then
-            pp = pp + 1
-            this%biophys_forc(c)%rootfr_patch(pp,lbj:ubj) = soilstate_vars%rootfr_patch(p,lbj:ubj)
-          endif
-        endif
-      enddo
-    endif
-  enddo
+    if (present(waterflux_vars)) then
+       call this%BeTRSetBiophysForcingWaterFluxVars(   &
+            bounds,                                    &
+            lbj, ubj, col%pfti, col%npfts, pft%active, &
+            waterflux_vars%qflx_infl_col,              &
+            waterflux_vars%qflx_totdrain_col,          &
+            waterflux_vars%qflx_gross_evap_soil_col,   &
+            waterflux_vars%qflx_gross_infl_soil_col,   &
+            waterflux_vars%qflx_surf_col,              &
+            waterflux_vars%qflx_dew_grnd_col,          &
+            waterflux_vars%qflx_dew_snow_col,          &
+            waterflux_vars%qflx_sub_snow_vol_col,      &
+            waterflux_vars%qflx_sub_snow_col,          &
+            waterflux_vars%qflx_h2osfc2topsoi_col,     &
+            waterflux_vars%qflx_snow2topsoi_col,       &
+            waterflux_vars%qflx_rootsoi_col,           &
+            waterflux_vars%qflx_adv_col,               &
+            waterflux_vars%qflx_drain_vr_col,          &
+            waterflux_vars%qflx_tran_veg_patch,        &
+            waterflux_vars%qflx_rootsoi_frac_patch)
+
+    end if
+
+    if (present(temperature_vars)) then
+       call this%BeTRSetBiophysForcingTemperatureVars( &
+            bounds,                                    &
+            lbj, ubj, col%pfti, col%npfts, pft%active, &
+            temperature_vars%t_soi10cm_col,            &
+            temperature_vars%t_soisno_col,             &
+            temperature_vars%t_veg_patch )
+    end if
+
+    if (present(soilhydrology_vars)) then
+       call this%BeTRSetBiophysForcingSoilHydrologyVars( &
+            bounds, lbj, ubj,                            &
+            soilhydrology_vars%qcharge_col,              &
+            soilhydrology_vars%fracice_col )
+    end if
+
+    if (present(canopystate_vars)) then
+       call this%BeTRSetBiophysForcingCanopyStateVars( &
+            bounds,                                    &
+            lbj, ubj, col%pfti, col%npfts, pft%active, &
+            canopystate_vars%altmax_col,               &
+            canopystate_vars%altmax_lastyear_col,      &
+            canopystate_vars%lbl_rsc_h2o_patch,        &
+            canopystate_vars%elai_patch)
+    end if
+
+    if (present(atm2lnd_vars)) then
+       call this%BeTRSetBiophysForcingAtm2LndVars( &
+            bounds, lbj, ubj,                      &
+            atm2lnd_vars%forc_pbot_downscaled_col, &
+            atm2lnd_vars%forc_t_downscaled_col)
+    end if
+
+    if (present(chemstate_vars)) then
+       call this%BeTRSetBiophysForcingChemStateVars( &
+            bounds, lbj, ubj,                        &
+            chemstate_vars%soil_pH)
+    end if
+
+    if (present(soilstate_vars)) then
+       call this%BeTRSetBiophysForcingSoilStateVars(   &
+            bounds,                                    &
+            lbj, ubj, col%pfti, col%npfts, pft%active, &
+            soilstate_vars%bsw_col,                    &
+            soilstate_vars%watsat_col,                 &
+            soilstate_vars%eff_porosity_col,           &
+            soilstate_vars%cellorg_col,                &
+            soilstate_vars%cellclay_col,               &
+            soilstate_vars%cellsand_col,               &
+            soilstate_vars%bd_col,                     &
+            soilstate_vars%watfc_col,                  &
+            soilstate_vars%sucsat_col,                 &
+            soilstate_vars%rootfr_patch)
+    end if
+
   end subroutine BeTRSimulationSetBiophysForcing
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingWaterStateVars(this, begc, endc, &
+       lbj, ubj, finundated_col, frac_h2osfc_col, h2osoi_liq_col,              &
+       h2osoi_ice_col, h2osoi_liqvol_col, h2osoi_icevol_col,                   &
+       h2osoi_vol_col, air_vol_col, rho_vap_col, rhvap_soi_col,                &
+       smp_l_col)
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    integer                     , intent(in)    :: begc, endc
+    integer                     , intent(in)    :: lbj, ubj
+    real(r8), pointer           , intent(in)    :: finundated_col(:)
+    real(r8), pointer           , intent(in)    :: frac_h2osfc_col(:)
+    real(r8), pointer           , intent(in)    :: h2osoi_liq_col(:,:)
+    real(r8), pointer           , intent(in)    :: h2osoi_ice_col(:,:)
+    real(r8), pointer           , intent(in)    :: h2osoi_liqvol_col(:,:)
+    real(r8), pointer           , intent(in)    :: h2osoi_icevol_col(:,:)
+    real(r8), pointer           , intent(in)    :: h2osoi_vol_col(:,:)
+    real(r8), pointer           , intent(in)    :: air_vol_col(:,:)
+    real(r8), pointer           , intent(in)    :: rho_vap_col(:,:)
+    real(r8), pointer           , intent(in)    :: rhvap_soi_col(:,:)
+    real(r8), pointer           , intent(in)    :: smp_l_col(:,:)
+
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+
+    do c = begc, endc
+
+       if (.not. this%active_col(c)) cycle
+
+       this%biophys_forc(c)%finundated_col    (cc)         = finundated_col    (c)
+       this%biophys_forc(c)%frac_h2osfc_col   (cc)         = frac_h2osfc_col   (c)
+       this%biophys_forc(c)%h2osoi_liq_col    (cc,lbj:ubj) = h2osoi_liq_col    (c,lbj:ubj)
+       this%biophys_forc(c)%h2osoi_ice_col    (cc,lbj:ubj) = h2osoi_ice_col    (c,lbj:ubj)
+       this%biophys_forc(c)%h2osoi_liqvol_col (cc,lbj:ubj) = h2osoi_liqvol_col (c,lbj:ubj)
+       this%biophys_forc(c)%h2osoi_icevol_col (cc,lbj:ubj) = h2osoi_icevol_col (c,lbj:ubj)
+       this%biophys_forc(c)%h2osoi_vol_col    (cc,lbj:ubj) = h2osoi_vol_col    (c,lbj:ubj)
+       this%biophys_forc(c)%air_vol_col       (cc,lbj:ubj) = air_vol_col       (c,lbj:ubj)
+       this%biophys_forc(c)%rho_vap           (cc,lbj:ubj) = rho_vap_col       (c,lbj:ubj)
+       this%biophys_forc(c)%rhvap_soi         (cc,lbj:ubj) = rhvap_soi_col     (c,lbj:ubj)
+       this%biophys_forc(c)%smp_l_col         (cc,lbj:ubj) = smp_l_col         (c,lbj:ubj)
+
+    enddo
+
+  end subroutine BeTRSimulationSetBiophysForcingWaterStateVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingCarbonFluxVars(this, bounds, &
+       lbj, ubj, col_pfti, col_npfts, pft_active, &
+       annsum_npp_patch, agnpp_patch, bgnpp_patch)
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    integer  , pointer          , intent(in)    :: col_pfti         (:)
+    integer  , pointer          , intent(in)    :: col_npfts        (:)
+    logical  , pointer          , intent(in)    :: pft_active       (:)
+    real(r8) , pointer          , intent(in)    :: annsum_npp_patch (:)
+    real(r8) , pointer          , intent(in)    :: agnpp_patch      (:)
+    real(r8) , pointer          , intent(in)    :: bgnpp_patch      (:)
+    !	
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+       if (.not. this%active_col(c)) cycle
+
+       npft_loc = ubound(annsum_npp_patch,1)-lbound(annsum_npp_patch,1)+1
+
+       if (col_pfti(c) /= lbound(annsum_npp_patch,1) .and. npft_loc/=col_npfts(c)) then
+          do pi = 1, betr_maxpatch_pft
+             this%biophys_forc(c)%annsum_npp_patch(pi) = 0._r8
+             this%biophys_forc(c)%agnpp_patch(pi)      = 0._r8
+             this%biophys_forc(c)%bgnpp_patch(pi)      = 0._r8
+          enddo
+       else
+          if (use_cn) then
+             pp = 0
+             do pi = 1, betr_maxpatch_pft
+                if (pi <= col_npfts(c)) then
+                   p = col_pfti(c) + pi - 1
+                   if (pft_active(p)) then
+                      pp = pp + 1
+                      this%biophys_forc(c)%annsum_npp_patch(pp) = annsum_npp_patch(p)
+                      this%biophys_forc(c)%agnpp_patch(pp)      = agnpp_patch(p)
+                      this%biophys_forc(c)%bgnpp_patch(pp)      = bgnpp_patch(p)
+                   endif
+                endif
+             enddo
+          else
+             npft_loc = ubound(annsum_npp_patch,1)-lbound(annsum_npp_patch,1)+1
+             if (col_pfti(c) /= lbound(annsum_npp_patch,1) .and. npft_loc/=col_npfts(c)) then
+                do pi = 1, betr_maxpatch_pft
+                   this%biophys_forc(c)%annsum_npp_patch(pi) = 0._r8
+                   this%biophys_forc(c)%agnpp_patch(pi)      = 0._r8
+                   this%biophys_forc(c)%bgnpp_patch(pi)      = 0._r8
+                enddo
+             endif
+          endif
+       endif
+    enddo
+
+  end subroutine BeTRSimulationSetBiophysForcingCarbonFluxVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingWaterFluxVars(this, bounds, &
+       lbj, ubj, col_pfti, col_npfts, pft_active,                       &
+       qflx_infl_col,                                                   &
+       qflx_totdrain_col,                                               &
+       qflx_gross_evap_soil_col,                                        &
+       qflx_gross_infl_soil_col,                                        &
+       qflx_surf_col,                                                   &
+       qflx_dew_grnd_col,                                               &
+       qflx_dew_snow_col,                                               &
+       qflx_sub_snow_vol_col,                                           &
+       qflx_sub_snow_col,                                               &
+       qflx_h2osfc2topsoi_col,                                          &
+       qflx_snow2topsoi_col,                                            &
+       qflx_rootsoi_col,                                                &
+       qflx_adv_col,                                                    &
+       qflx_drain_vr_col,                                               &
+       qflx_tran_veg_patch,                                             &
+       qflx_rootsoi_frac_patch)
+
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    integer  , pointer          , intent(in)    :: col_pfti                 (:)
+    integer  , pointer          , intent(in)    :: col_npfts                (:)
+    logical  , pointer          , intent(in)    :: pft_active               (:)
+    real(r8) , pointer          , intent(in)    :: qflx_infl_col            (:)
+    real(r8) , pointer          , intent(in)    :: qflx_totdrain_col        (:)
+    real(r8) , pointer          , intent(in)    :: qflx_gross_evap_soil_col (:)
+    real(r8) , pointer          , intent(in)    :: qflx_gross_infl_soil_col (:)
+    real(r8) , pointer          , intent(in)    :: qflx_surf_col            (:)
+    real(r8) , pointer          , intent(in)    :: qflx_dew_grnd_col        (:)
+    real(r8) , pointer          , intent(in)    :: qflx_dew_snow_col        (:)
+    real(r8) , pointer          , intent(in)    :: qflx_sub_snow_vol_col    (:)
+    real(r8) , pointer          , intent(in)    :: qflx_sub_snow_col        (:)
+    real(r8) , pointer          , intent(in)    :: qflx_h2osfc2topsoi_col   (:)
+    real(r8) , pointer          , intent(in)    :: qflx_snow2topsoi_col     (:)
+    real(r8) , pointer          , intent(in)    :: qflx_rootsoi_col         (:,:)
+    real(r8) , pointer          , intent(in)    :: qflx_adv_col             (:,:)
+    real(r8) , pointer          , intent(in)    :: qflx_drain_vr_col        (:,:)
+    real(r8) , pointer          , intent(in)    :: qflx_tran_veg_patch      (:)
+    real(r8) , pointer          , intent(in)    :: qflx_rootsoi_frac_patch  (:,:)
+
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+
+       if(.not. this%active_col(c))cycle
+
+       this%biogeo_flux(c)%qflx_infl_col(cc)             = qflx_infl_col(c)
+       this%biogeo_flux(c)%qflx_totdrain_col(cc)         = qflx_totdrain_col(c)
+       this%biogeo_flux(c)%qflx_gross_evap_soil_col(cc)  = qflx_gross_evap_soil_col(c)
+       this%biogeo_flux(c)%qflx_gross_infl_soil_col(cc)  = qflx_gross_infl_soil_col(c)
+       this%biophys_forc(c)%qflx_surf_col(cc)            = qflx_surf_col(c)
+       this%biophys_forc(c)%qflx_dew_grnd_col(cc)        = qflx_dew_grnd_col(c)
+       this%biophys_forc(c)%qflx_dew_snow_col(cc)        = qflx_dew_snow_col(c)
+       this%biophys_forc(c)%qflx_sub_snow_vol_col(cc)    = qflx_sub_snow_vol_col(c)
+       this%biophys_forc(c)%qflx_sub_snow_col(cc)        = qflx_sub_snow_col(c)
+       this%biophys_forc(c)%qflx_h2osfc2topsoi_col(cc)   = qflx_h2osfc2topsoi_col(c)
+       this%biophys_forc(c)%qflx_snow2topsoi_col(cc)     = qflx_snow2topsoi_col(c)
+       this%biophys_forc(c)%qflx_rootsoi_col(cc,lbj:ubj) = qflx_rootsoi_col(c,lbj:ubj)*1.e-3_r8
+
+       this%biogeo_flux(c)%qflx_adv_col(cc,lbj-1:ubj)    = qflx_adv_col(c,lbj-1:ubj)
+       this%biogeo_flux(c)%qflx_drain_vr_col(cc,lbj:ubj) = qflx_drain_vr_col(c,lbj:ubj)
+
+       pp = 0
+       do pi = 1, betr_maxpatch_pft
+          if (pi <= col_npfts(c)) then
+             p = col_pfti(c) + pi - 1
+             if (pft_active(p)) then
+                pp = pp + 1
+                this%biophys_forc(c)%qflx_tran_veg_patch(pp)             = qflx_tran_veg_patch(p)
+                this%biophys_forc(c)%qflx_rootsoi_frac_patch(pp,lbj:ubj) = qflx_rootsoi_frac_patch(p,lbj:ubj)
+             endif
+          endif
+       enddo
+
+    enddo
+
+  end subroutine BeTRSimulationSetBiophysForcingWaterFluxVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingTemperatureVars(this, bounds, &
+       lbj, ubj, col_pfti, col_npfts, pft_active,                         &
+       t_soi10cm_col, t_soisno_col, t_veg_patch )
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !USES
+    !
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    integer  , pointer          , intent(in)    :: col_pfti      (:)
+    integer  , pointer          , intent(in)    :: col_npfts     (:)
+    logical  , pointer          , intent(in)    :: pft_active    (:)
+    real(r8) , pointer          , intent(in)    :: t_soi10cm_col (:)
+    real(r8) , pointer          , intent(in)    :: t_soisno_col  (:,:)
+    real(r8) , pointer          , intent(in)    :: t_veg_patch   (:)
+    !
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+       if(.not. this%active_col(c))cycle
+
+       this%biophys_forc(c)%t_soi_10cm(cc)           = t_soi10cm_col(c)
+       this%biophys_forc(c)%t_soisno_col(cc,lbj:ubj) = t_soisno_col(c,lbj:ubj)
+       pp = 0
+       do pi = 1, betr_maxpatch_pft
+          if (pi <= col_npfts(c)) then
+             p = col_pfti(c) + pi - 1
+             if (pft_active(p)) then
+                pp = pp + 1
+                this%biophys_forc(c)%t_veg_patch(pp) = t_veg_patch(p)
+             endif
+          endif
+       enddo
+
+    enddo
+  end subroutine BeTRSimulationSetBiophysForcingTemperatureVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingSoilHydrologyVars(this, bounds, &
+       lbj, ubj, qcharge_col, fracice_col)
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    real(r8) , pointer          , intent(in)    :: qcharge_col (:)
+    real(r8) , pointer          , intent(in)    :: fracice_col (:,:)
+    !
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+       if (.not. this%active_col(c)) cycle
+
+       this%biophys_forc(c)%qflx_bot_col(cc)        = qcharge_col(c)
+       this%biophys_forc(c)%fracice_col(cc,lbj:ubj) = fracice_col(c,lbj:ubj)
+    enddo
+
+  end subroutine BeTRSimulationSetBiophysForcingSoilHydrologyVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingCanopyStateVars(this, bounds, &
+       lbj, ubj, col_pfti, col_npfts, pft_active,          &
+       altmax_col, altmax_lastyear_col, lbl_rsc_h2o_patch, &
+       elai_patch)
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    integer  , pointer          , intent(in)    :: col_pfti            (:)
+    integer  , pointer          , intent(in)    :: col_npfts           (:)
+    logical  , pointer          , intent(in)    :: pft_active          (:)
+    real(r8) , pointer          , intent(in)    :: altmax_col          (:)
+    real(r8) , pointer          , intent(in)    :: altmax_lastyear_col (:)
+    real(r8) , pointer          , intent(in)    :: lbl_rsc_h2o_patch   (:)
+    real(r8) , pointer          , intent(in)    :: elai_patch          (:)
+
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+
+       if (.not. this%active_col(c)) cycle
+
+       this%biophys_forc(c)%altmax_col(cc)          = altmax_col(c)
+       this%biophys_forc(c)%altmax_lastyear_col(cc) = altmax_lastyear_col(c)
+
+       pp = 0
+       do pi = 1, betr_maxpatch_pft
+          if (pi <= col_npfts(c)) then
+             p = col_pfti(c) + pi - 1
+             if (pft_active(p)) then
+                pp = pp + 1
+                this%biophys_forc(c)%lbl_rsc_h2o_patch(pp) = lbl_rsc_h2o_patch(p)
+                this%biophys_forc(c)%elai_patch(pp)        = elai_patch(p)
+             endif
+          endif
+       enddo
+
+    enddo
+  end subroutine BeTRSimulationSetBiophysForcingCanopyStateVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingAtm2LndVars(this, bounds, lbj, ubj, &
+       forc_pbot_downscaled_col, forc_t_downscaled_col )
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    real(r8) , pointer          , intent(in)    :: forc_pbot_downscaled_col (:)
+    real(r8) , pointer          , intent(in)    :: forc_t_downscaled_col    (:)
+    !
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+
+       if (.not. this%active_col(c)) cycle
+
+       this%biophys_forc(c)%forc_pbot_downscaled_col(cc) = forc_pbot_downscaled_col(c)
+       this%biophys_forc(c)%forc_t_downscaled_col(cc)    = forc_t_downscaled_col(c)
+
+    enddo
+
+  end subroutine BeTRSimulationSetBiophysForcingAtm2LndVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingChemStateVars(this, bounds, lbj, ubj, soil_pH)
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !ARGUMENTS
+    !
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    real(r8) , pointer          , intent(in)    :: soil_pH (:,:)
+
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+
+       if (.not. this%active_col(c)) cycle
+
+       this%biophys_forc(c)%soil_pH(cc,lbj:ubj) = soil_pH(c,lbj:ubj)
+
+    enddo
+
+  end subroutine BeTRSimulationSetBiophysForcingChemStateVars
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBiophysForcingSoilStateVars(this, bounds, &
+       lbj, ubj, col_pfti, col_npfts, pft_active,                       &
+       bsw_col,                                                         &
+       watsat_col,                                                      &
+       eff_porosity_col,                                                &
+       cellorg_col,                                                     &
+       cellclay_col,                                                    &
+       cellsand_col,                                                    &
+       bd_col,                                                          &
+       watfc_col,                                                       &
+       sucsat_col,                                                      &
+       rootfr_patch)
+    !
+    !DESCRIPTION
+    !pass in biogeophysical variables for running betr
+    !
+    implicit none
+    !ARGUMENTS
+    class(betr_simulation_type) , intent(inout) :: this
+    type(bounds_type)           , intent(in)    :: bounds
+    integer                     , intent(in)    :: lbj, ubj
+    integer  , pointer          , intent(in)    :: col_pfti         (:)
+    integer  , pointer          , intent(in)    :: col_npfts        (:)
+    logical  , pointer          , intent(in)    :: pft_active       (:)
+    real(r8) , pointer          , intent(in)    :: bsw_col          (:,:)
+    real(r8) , pointer          , intent(in)    :: watsat_col       (:,:)
+    real(r8) , pointer          , intent(in)    :: eff_porosity_col (:,:)
+    real(r8) , pointer          , intent(in)    :: cellorg_col      (:,:)
+    real(r8) , pointer          , intent(in)    :: cellclay_col     (:,:)
+    real(r8) , pointer          , intent(in)    :: cellsand_col     (:,:)
+    real(r8) , pointer          , intent(in)    :: bd_col           (:,:)
+    real(r8) , pointer          , intent(in)    :: watfc_col        (:,:)
+    real(r8) , pointer          , intent(in)    :: sucsat_col       (:,:)
+    real(r8) , pointer          , intent(in)    :: rootfr_patch     (:,:)
+
+    !TEMPORARY VARIABLES
+    integer :: p, pi, cc, c, l, pp
+    integer :: npft_loc
+
+    cc = 1
+    do c = bounds%begc, bounds%endc
+
+       if (.not. this%active_col(c)) cycle
+
+       this%biophys_forc(c)%bsw_col(cc,lbj:ubj)          = bsw_col(c,lbj:ubj)
+       this%biophys_forc(c)%watsat_col(cc,lbj:ubj)       = watsat_col(c,lbj:ubj)
+       this%biophys_forc(c)%eff_porosity_col(cc,lbj:ubj) = eff_porosity_col(c,lbj:ubj)
+       this%biophys_forc(c)%cellorg_col(cc,lbj:ubj)      = cellorg_col(c,lbj:ubj)
+       this%biophys_forc(c)%cellclay_col(cc,lbj:ubj)     = cellclay_col(c,lbj:ubj)
+       this%biophys_forc(c)%cellsand_col(cc,lbj:ubj)     = cellsand_col(c,lbj:ubj)
+       this%biophys_forc(c)%bd_col(cc,lbj:ubj)           = bd_col(c,lbj:ubj)
+       this%biophys_forc(c)%watfc_col(cc,lbj:ubj)        = watfc_col(c,lbj:ubj)
+       this%biophys_forc(c)%sucsat_col(cc,lbj:ubj)       = sucsat_col(c,lbj:ubj)
+
+       pp = 0
+       do pi = 1, betr_maxpatch_pft
+          if (pi <= col_npfts(c)) then
+             p = col_pfti(c) + pi - 1
+             if (pft_active(p)) then
+                pp = pp + 1
+                this%biophys_forc(c)%rootfr_patch(pp,lbj:ubj) = rootfr_patch(p,lbj:ubj)
+             endif
+          endif
+       enddo
+
+    enddo
+
+  end subroutine BeTRSimulationSetBiophysForcingSoilStateVars
 
   !------------------------------------------------------------------------
   subroutine BeTRSimulationRetrieveBiogeoFlux(this, bounds, lbj,ubj, carbonflux_vars,  &
@@ -1096,7 +1519,7 @@ contains
   end subroutine BeTRSimulationPreDiagSoilColWaterFlux
 
   !------------------------------------------------------------------------
-  subroutine BeTRSimulationDiagnoseDtracerFreezeThaw(this, bounds, num_nolakec, filter_nolakec, col, lun)
+  subroutine BeTRSimulationDiagnoseDtracerFreezeThaw(this, bounds, num_nolakec, filter_nolakec)
   !
   ! DESCRIPTION
   ! aqueous tracer partition based on freeze-thaw
@@ -1110,9 +1533,6 @@ contains
   type(bounds_type)     , intent(in) :: bounds
   integer               , intent(in) :: num_nolakec                        ! number of column non-lake points in column filter
   integer               , intent(in) :: filter_nolakec(:)                  ! column filter for non-lake points
-!  type(waterstate_type), intent(in) :: waterstate_vars
-  type(column_type)     , intent(in) :: col                                ! column type
-  type(landunit_type)   , intent(in)  :: lun
 
   !temporary variables
   type(betr_bounds_type)     :: betr_bounds
@@ -1120,7 +1540,7 @@ contains
 
   call this%BeTRSetBounds(betr_bounds)
 
-  call this%BeTRSetcps(bounds, col)
+  !call this%BeTRSetcpsCol(bounds, col)
 
   do fc = 1, num_nolakec
     c = filter_nolakec(fc)
@@ -1547,23 +1967,17 @@ contains
 
   end subroutine hist_output_states
   !------------------------------------------------------------------------
-  subroutine BeTRSimulationCreateHistory(this, bounds, betr_nlevtrc_soil,&
-     num_state1d, num_state2d, num_flux1d, num_flux2d)
+  subroutine BeTRSimulationCreateHistory(this, bounds)
   !
   !links the variable to output
   implicit none
   !ARGUMENTS
   class(betr_simulation_type) , intent(inout) :: this
   type(bounds_type)           , intent(in)    :: bounds               ! bounds
-  integer           , intent(in) :: betr_nlevtrc_soil
-  integer           ,     intent(in)   :: num_state1d
-  integer           ,     intent(in)   :: num_state2d
-  integer           ,     intent(in)   :: num_flux1d
-  integer           ,     intent(in)   :: num_flux2d
 
-  call this%hist_create_states(bounds, betr_nlevtrc_soil, num_state1d, num_state2d)
+  call this%hist_create_states(bounds, betr_nlevtrc_soil, this%num_hist_state1d, this%num_hist_state2d)
 
-  call this%hist_create_fluxes(bounds, betr_nlevtrc_soil, num_flux1d, num_flux2d)
+  call this%hist_create_fluxes(bounds, betr_nlevtrc_soil, this%num_hist_flux1d, this%num_hist_flux2d)
 
   end subroutine BeTRSimulationCreateHistory
   !------------------------------------------------------------------------
@@ -1813,39 +2227,97 @@ contains
   type(bounds_type), intent(in) :: bounds
   type(column_type), intent(in) :: col
   type(patch_type), optional, intent(in) :: pft
+
+  call this%BeTRSetcpsCol(bounds%begc, bounds%endc, &
+       col%snl, col%zi, col%dz, col%z, col%pfti, col%pftf, col%npfts)
+
+  if (present(pft)) then
+     call this%BeTRSetcpsPFT(bounds%begc, bounds%endc, &
+          col%pfti, col%npfts, pft%active, pft%itype, pft%wtcol)
+  endif
+
+  end subroutine BeTRSimulationSetcps
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetcpsCol(this, begc, endc, snl, zi, dz, z, pfti, pftf, npfts)
+  !
+  !DESCRIPTION
+  ! Sets up BeTR columns
+  !USES
+  use tracer_varcon         , only : betr_nlevsoi
+  !ARGUMENTS
+  implicit none
+  class(betr_simulation_type) , intent(inout) :: this
+  integer                     , intent(in)    :: begc, endc
+  integer, pointer            , intent(in)    :: snl(:)
+  real(r8), pointer           , intent(in)    :: zi(:,:)
+  real(r8), pointer           , intent(in)    :: dz(:,:)
+  real(r8), pointer           , intent(in)    :: z(:,:)
+  integer, pointer            , intent(in)    :: pfti(:)
+  integer, pointer            , intent(in)    :: pftf(:)
+  integer, pointer            , intent(in)    :: npfts(:)
+  !
+  ! !LOCAL VARIABLES:
+  integer :: c
+
+  do c = begc, endc
+
+    this%betr_col(c)%snl(1)               = snl(c)
+    this%betr_col(c)%zi(1,0:betr_nlevsoi) = zi(c,0:betr_nlevsoi)
+    this%betr_col(c)%dz(1,1:betr_nlevsoi) = dz(c,1:betr_nlevsoi)
+    this%betr_col(c)%z(1,1:betr_nlevsoi)  = z(c,1:betr_nlevsoi)
+    this%betr_col(c)%pfti(1)              = pfti(c)
+    this%betr_col(c)%pftf(1)              = pftf(c)
+    this%betr_col(c)%npfts(1)             = npfts(c)
+
+  enddo
+
+  end subroutine BeTRSimulationSetcpsCol
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetcpsPFT(this, begc, endc, pfti, npfts, active, itype, wtcol)
+  !
+  !DESCRIPTION
+  ! Set up BeTR PFT
+  !
+  !USES
+  use betr_varcon , only : betr_maxpatch_pft
+  use pftvarcon   , only : noveg, crop
+  !
+  !ARGUMENTS
+  implicit none
+  class(betr_simulation_type) , intent(inout) :: this
+  integer                     , intent(in)    :: begc, endc
+  integer, pointer            , intent(in)    :: pfti(:)
+  integer, pointer            , intent(in)    :: npfts(:)
+  logical, pointer            , intent(in)    :: active(:)
+  integer, pointer            , intent(in)    :: itype(:)
+  real(r8)                    , intent(in)    :: wtcol(:)
+  !
+  ! !LOCAL VARIABLES:
   integer :: c, p, pi, pp
 
+  do c = begc, endc
 
-  do c = bounds%begc, bounds%endc
-    this%betr_col(c)%snl(1) = col%snl(c)
-    this%betr_col(c)%zi(1,0:betr_nlevsoi)= col%zi(c,0:betr_nlevsoi)
-    this%betr_col(c)%dz(1,1:betr_nlevsoi)= col%dz(c,1:betr_nlevsoi)
-    this%betr_col(c)%z(1,1:betr_nlevsoi)= col%z(c,1:betr_nlevsoi)
-    this%betr_col(c)%pfti(1)= col%pfti(c)
-    this%betr_col(c)%pftf(1)= col%pftf(c)
-    this%betr_col(c)%npfts(1)= col%npfts(c)
-
-    if(present(pft))then
-      this%betr_pft(c)%column(:)=1
-      this%betr_pft(c)%npfts = 0
+      this%betr_pft(c)%column(:) = 1
+      this%betr_pft(c)%npfts     = 0
       pp = 0
       do pi = 1, betr_maxpatch_pft
-        if (pi <= col%npfts(c)) then
-          p = col%pfti(c) + pi - 1
-          if (pft%active(p) .and. (pft%itype(p) .ne. noveg)) then
+        if (pi <= npfts(c)) then
+          p = pfti(c) + pi - 1
+          if (active(p) .and. (itype(p) .ne. noveg)) then
             pp = pp + 1
-            this%betr_pft(c)%wtcol(pp) = pft%wtcol(p)
-            this%betr_pft(c)%itype(pp) = pft%itype(p)
-            this%betr_pft(c)%crop(pp) = crop(pi)         !the crop looks weird here, jyt
+            this%betr_pft(c)%wtcol(pp) = wtcol(p)
+            this%betr_pft(c)%itype(pp) = itype(p)
+            this%betr_pft(c)%crop(pp)  = crop(pi)         !the crop looks weird here, jyt
           endif
         endif
       enddo
       this%betr_pft(c)%npfts = pp
-    endif
+
   enddo
 
-
-  end subroutine BeTRSimulationSetcps
+  end subroutine BeTRSimulationSetcpsPFT
 
   !------------------------------------------------------------------------
   subroutine BeTRSimulationSetBounds(this, betr_bounds)
@@ -1860,10 +2332,11 @@ contains
   type(betr_bounds_type), intent(out)  :: betr_bounds
 
   betr_bounds%lbj  = 1; betr_bounds%ubj  = betr_nlevsoi
-  betr_bounds%begp = 1; betr_bounds%endp =  betr_maxpatch_pft
+  betr_bounds%begp = 1; betr_bounds%endp = betr_maxpatch_pft
   betr_bounds%begc = 1; betr_bounds%endc = 1
   betr_bounds%begl = 1; betr_bounds%endl = 1
   betr_bounds%begg = 1; betr_bounds%endg = 1
+
   end subroutine BeTRSimulationSetBounds
 
   !------------------------------------------------------------------------
@@ -1877,4 +2350,191 @@ contains
   return
   end function do_soibgc
 
+  !------------------------------------------------------------------------
+  subroutine BeTRInitializeBiophysForc(this, betr_bounds, begc, endc)
+    !
+    !DESCRIPTION
+    ! set up columns
+    !
+    implicit none
+    !ARGUMENTS
+    !
+    class(betr_simulation_type) , intent(inout) :: this
+    type(betr_bounds_type)                      :: betr_bounds
+    integer                     , intent(in)    :: begc, endc
+    !
+    ! !LOCAL VARIABLES:
+    integer :: c, l
+
+    do c = begc, endc
+       call this%biophys_forc(c)%Init(betr_bounds)
+    enddo
+
+  end subroutine BeTRInitializeBiophysForc
+
+  !------------------------------------------------------------------------
+  subroutine BeTRInitializeCols(this, betr_bounds, begc, endc)
+    !
+    !DESCRIPTION
+    ! set up columns
+    !
+    implicit none
+    !ARGUMENTS
+    !
+    class(betr_simulation_type) , intent(inout) :: this
+    type(betr_bounds_type)                      :: betr_bounds
+    integer                     , intent(in)    :: begc, endc
+    !
+    ! !LOCAL VARIABLES:
+    integer :: c
+
+    do c = begc, endc
+       call this%betr_col(c)%Init(betr_bounds)
+    enddo
+
+  end subroutine BeTRInitializeCols
+
+  !------------------------------------------------------------------------
+  subroutine BeTRInitializePFT(this, betr_bounds, begc, endc)
+    !
+    !DESCRIPTION
+    ! set up columns
+    !
+    implicit none
+    !ARGUMENTS
+    !
+    class(betr_simulation_type) , intent(inout) :: this
+    type(betr_bounds_type)                      :: betr_bounds
+    integer                     , intent(in)    :: begc, endc
+    !
+    ! !LOCAL VARIABLES:
+    integer :: c
+
+    do c = begc, endc
+       call this%betr_pft(c)%Init(betr_bounds)
+    enddo
+
+  end subroutine BeTRInitializePFT
+
+  !------------------------------------------------------------------------
+  subroutine BeTRInitializeActiveCols(this, betr_bounds, begc, endc, landunit, lun_itype)
+    !
+    !DESCRIPTION
+    ! set up columns
+    !
+    !USES
+    use landunit_varcon, only : istsoil, istcrop
+    implicit none
+    !ARGUMENTS
+    !
+    class(betr_simulation_type) , intent(inout) :: this
+    type(betr_bounds_type)                      :: betr_bounds
+    integer                     , intent(in)    :: begc, endc
+    integer                     , intent(in)    :: landunit(:)
+    integer                     , intent(in)    :: lun_itype(:)
+    !
+    ! !LOCAL VARIABLES:
+    integer :: c, l
+
+    do c = begc, endc
+
+       l = landunit(c)
+
+       if (lun_itype(l) == istsoil .or. lun_itype(l) == istcrop) then
+          this%active_col(c) = .true.
+       else
+          this%active_col(c) = .false.
+       endif
+    enddo
+
+  end subroutine BeTRInitializeActiveCols
+
+  !------------------------------------------------------------------------
+  subroutine BeTRInitialize_1(this, betr_bounds, begc, endc, namelist_buffer)
+    !
+    !DESCRIPTION
+    ! set up columns
+    !
+    !USES
+    use betr_constants , only : betr_namelist_buffer_size
+    use tracer_varcon  , only : betr_nlevsoi
+    !
+    implicit none
+    !
+    !ARGUMENTS
+    class(betr_simulation_type)              , intent(inout) :: this
+    type(betr_bounds_type)                                   :: betr_bounds
+    integer                                  , intent(in)    :: begc, endc
+    character(len=betr_namelist_buffer_size) , intent(in)    :: namelist_buffer
+    !
+    ! !LOCAL VARIABLES:
+    integer :: c, l
+    logical :: asoibgc
+
+    do c = begc, endc
+
+       call this%betr(c)%Init(namelist_buffer, betr_bounds, &
+            this%betr_col(c), this%biophys_forc(c), &
+            asoibgc, this%bstatus(c))
+
+       if (c==begc) this%active_soibgc=asoibgc
+
+       if (this%bstatus(c)%check_status())then
+          call this%bsimstatus%setcol(c)
+          call this%bsimstatus%set_msg(this%bstatus(c)%print_msg(),this%bstatus(c)%print_err())
+          exit
+       endif
+
+    enddo
+
+    if (this%bsimstatus%check_status()) call endrun(msg=this%bsimstatus%print_msg())
+
+    do c = begc, endc
+
+       call this%biogeo_state(c)%Init(betr_bounds, this%active_soibgc)
+
+       call this%biogeo_flux(c)%Init(betr_bounds, this%active_soibgc)
+    enddo
+
+    !identify variables that are used for history output
+    c = begc
+    call this%betr(c)%get_hist_size(this%num_hist_state1d, this%num_hist_state2d, &
+         this%num_hist_flux1d, this%num_hist_flux2d)
+
+    call this%HistAlloc(begc, endc)
+
+    call this%betr(c)%get_hist_info(this%num_hist_state1d, &
+         this%num_hist_state2d,                            &
+         this%num_hist_flux1d, this%num_hist_flux2d,       &
+         this%state_hist1d_var(1:this%num_hist_state1d),   &
+         this%state_hist2d_var(1:this%num_hist_state2d),   &
+         this%flux_hist1d_var(1:this%num_hist_flux1d),     &
+         this%flux_hist2d_var(1:this%num_hist_flux2d))
+
+    if (this%bstatus(c)%check_status()) then
+       call this%bsimstatus%setcol(c)
+       call this%bsimstatus%set_msg(this%bstatus(c)%print_msg(),this%bstatus(c)%print_err())
+
+       if (this%bsimstatus%check_status()) call endrun(msg=this%bsimstatus%print_msg())
+    endif
+
+  end subroutine BeTRInitialize_1
+
+  !------------------------------------------------------------------------
+  subroutine BeTRSimulationSetBaseFilename(this,base_filename)
+    !
+    !DESCRIPTION
+    ! Sets base filename
+    !ARGUMENTS
+    implicit none
+    class(betr_simulation_type)         , intent(inout)        :: this
+    character(len=betr_filename_length) , optional, intent(in) :: base_filename
+
+    if (present(base_filename)) then
+      this%base_filename = base_filename
+    else
+      this%base_filename = ''
+    endif
+
+  end subroutine BeTRSimulationSetBaseFilename
 end module BeTRSimulation
